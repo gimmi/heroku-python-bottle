@@ -1,14 +1,13 @@
-create database prova
-  with owner = postgres
-       encoding = 'UTF8'
-       tablespace = pg_default
-       lc_collate = 'C'
-       lc_ctype = 'C'
-       connection limit = -1;
+-- run thi script with
+-- psql --set ON_ERROR_STOP=on -U postgres < schema.sql
+
+create database hrp;
+
+\connect hrp
 
 create table users(
    id uuid not null, 
-   name character varying(50) collate pg_catalog."c" not null, 
-   password character varying(50) collate pg_catalog."c", 
+   name varchar(50) not null, 
+   password varchar(50), 
    constraint pk_users primary key (id)
-)
+);
