@@ -11,3 +11,6 @@ create table users(
    password varchar(50), 
    constraint pk_users primary key (id)
 );
+
+insert into users(id, name, password) values('2e6f03e0-910c-11e4-b4a9-0800200c9a66', 'gimmi', 'secret');
+insert into users(id, name, password) values('2e6f03e1-910c-11e4-b4a9-0800200c9a66', 'elena', 'secret');
