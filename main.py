@@ -1,5 +1,6 @@
 import os
 import bottle
+from urllib.parse import urlparse
 import psycopg2
 from bottle import request
 
@@ -30,7 +31,15 @@ def static(filepath):
 
 
 def auth_user(name, password):
-    conn = psycopg2.connect('host=localhost port=5432 dbname=prova user=postgres password=postgres')
+    url = os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost/hrp')
+    url = urlparse(url)
+    conn = psycopg2.connect(
+        host=url.hostname,
+        port=url.port,
+        database=url.path[1:],
+        user=url.username,
+        password=url.password
+    )
     cur = conn.cursor()
     cur.execute('select id, name, password from users where name = %s and password = %s', (name, password))
     row = cur.fetchone()
