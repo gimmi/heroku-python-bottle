@@ -54,7 +54,7 @@ class AuthPlugin(object):
                 kwargs['user'] = auth[0]
                 return callback(*args, **kwargs)
             else:
-                return bottle.Response(status=401, headers={'WWW-Authenticate': 'Basic realm="Please Login"'})
+                return bottle.HTTPResponse(status=401, headers={'WWW-Authenticate': 'Basic realm="Please Login"'})
 
         return wrapper
 
