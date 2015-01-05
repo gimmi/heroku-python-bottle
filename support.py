@@ -1,4 +1,5 @@
 import psycopg2.pool
+import psycopg2.extras
 import os
 from urllib.parse import urlparse
 import bottle
@@ -12,7 +13,8 @@ def create_conn_pool():
         port=url.port,
         database=url.path[1:],
         user=url.username,
-        password=url.password
+        password=url.password,
+        cursor_factory=psycopg2.extras.RealDictCursor
     ))
 
 
