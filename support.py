@@ -3,6 +3,7 @@ import psycopg2.extras
 import os
 from urllib.parse import urlparse
 import bottle
+import logging
 
 
 def create_conn_pool():
@@ -16,6 +17,17 @@ def create_conn_pool():
         password=url.password,
         cursor_factory=psycopg2.extras.RealDictCursor
     ))
+
+
+def init_logging():
+    fmt = logging.Formatter(logging.BASIC_FORMAT, None)
+
+    shdlr = logging.StreamHandler()
+    shdlr.setFormatter(fmt)
+    shdlr.setLevel(logging.DEBUG)
+    logging.root.addHandler(shdlr)
+
+    logging.root.setLevel(logging.DEBUG)
 
 
 class DbPlugin(object):

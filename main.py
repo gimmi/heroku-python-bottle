@@ -9,6 +9,11 @@ import isodate
 from decimal import Decimal
 import itertools
 import urllib.parse
+import logging
+
+support.init_logging()
+
+logging.info('Starting app')
 
 conn_pool = support.create_conn_pool()
 app = bottle.Bottle()
@@ -62,6 +67,7 @@ def add_expense(user, db):
     with db.cursor() as cur:
         cur.execute('SELECT id FROM expenses WHERE id = %(id)s', params)
         if cur.fetchone():
+            logging.info('%s is updating expense %s', user, params['id'])
             cur.execute("""
                 UPDATE expenses SET
                     date = %(date)s,
@@ -74,6 +80,7 @@ def add_expense(user, db):
                 WHERE id = %(id)s
             """, params)
         else:
+            logging.info('%s is creating new expense %s', user, params['id'])
             cur.execute("""
             INSERT INTO expenses(id, date, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, tags)
             VALUES(%(id)s, %(date)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(tags)s)
