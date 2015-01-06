@@ -63,15 +63,15 @@ def add_expense(user, db):
         cur.execute('SELECT id FROM expenses WHERE id = %(id)s', params)
         if cur.fetchone():
             cur.execute("""
-            UPDATE expenses SET
-              id = %(id)s,
-              date = %(date)s,
-              gimmi_amount = %(gimmi_amount)s,
-              elena_amount = %(elena_amount)s,
-              gimmi_debt = %(gimmi_debt)s,
-              elena_debt = %(elena_debt)s,
-              description = %(description)s,
-              tags = %(tags)s
+                UPDATE expenses SET
+                    date = %(date)s,
+                    gimmi_amount = %(gimmi_amount)s,
+                    elena_amount = %(elena_amount)s,
+                    gimmi_debt = %(gimmi_debt)s,
+                    elena_debt = %(elena_debt)s,
+                    description = %(description)s,
+                    tags = %(tags)s
+                WHERE id = %(id)s
             """, params)
         else:
             cur.execute("""
