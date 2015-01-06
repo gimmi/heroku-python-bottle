@@ -23,11 +23,11 @@ app.install(support.AuthPlugin(conn_pool))
 
 @app.get('/')
 def index(user):
-    return static('index.html')
+    return static(user, 'index.html')
 
 
 @app.get('/<filepath:path>')
-def static(filepath, user):
+def static(user, filepath):
     root = os.path.join(os.path.dirname(os.path.realpath(__file__)))
     response = bottle.static_file(filepath, root=root)
     response.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
