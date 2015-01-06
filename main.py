@@ -132,4 +132,4 @@ def get_updated_utl(url, params):
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0', port=8080)
