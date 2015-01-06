@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="app">
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap 101 Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no">
+    <title>HRP</title>
 
     <script src="http://code.jquery.com/jquery-2.1.3.js"></script>
 
@@ -16,9 +16,9 @@
 
     <script src="app.js"></script>
 </head>
-<body>
-<div class="container">
-    <nav class="navbar navbar-default">
+<body style="padding-top: 70px">
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -27,31 +27,36 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">HRP</a>
+                <a class="navbar-brand" href="/">HRP</a>
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="#/expenses/edit">Add Expense</a></li>
                 </ul>
                 <p class="navbar-text navbar-right">Signed in as Mark Otto</p>
             </div>
-            <!--/.nav-collapse -->
         </div>
-        <!--/.container-fluid -->
-    </nav>
+    </div>
+</nav>
+<div class="container">
     <form>
-        <div class="form-group">
-            <label>Email address</label>
-            <input type="number" class="form-control" placeholder="Enter email">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" class="form-control" placeholder="yyyy-MM-dd">
+                </div>
+            </div>
         </div>
-        <div class="form-group">
-            <label>Password</label>
-            <input type="number" class="form-control" placeholder="Password">
+        <div class="row">
+            <div class="form-group"><label>gimmi_amount</label><input type="number" class="form-control" placeholder="Enter gimmi_amount"></div>
         </div>
+        <div class="form-group"><label>elena_amount</label><input type="number" class="form-control" placeholder="Enter elena_amount"></div>
+        <div class="form-group"><label>gimmi_debt</label><input type="number" class="form-control" placeholder="Enter gimmi_debt"></div>
+        <div class="form-group"><label>elena_debt</label><input type="number" class="form-control" placeholder="Enter elena_debt"></div>
+        <div class="form-group"><label>description</label><input type="text" class="form-control" placeholder="Enter description"></div>
         <div class="form-group">
-            <label>File input</label>
+            <label>tags</label>
             <select class="form-control">
                 <option>1</option>
                 <option>2</option>
@@ -59,13 +64,6 @@
                 <option>4</option>
                 <option>5</option>
             </select>
-
-            <p class="help-block">Example block-level help text here.</p>
-        </div>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox"> Check me out
-            </label>
         </div>
         <button type="submit" class="btn btn-default">Submit</button>
     </form>
