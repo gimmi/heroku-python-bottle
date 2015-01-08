@@ -10,29 +10,29 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                <div class="form-group">
+                <div ng-class="{ 'form-group': true, 'has-error': form.gimmiAmount.$invalid }">
                     <label>Gimmi Amount</label>
-                    <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount">
+                    <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true">
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-group">
+                <div ng-class="{ 'form-group': true, 'has-error': form.elenaDebt.$invalid }">
                     <label>Elena Debt</label>
-                    <input type="number" class="form-control" name="elenaDebt" ng-model="data.elenaDebt">
+                    <input type="number" class="form-control" name="elenaDebt" ng-model="data.elenaDebt" required="true">
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-3">
-                <div class="form-group">
+                <div ng-class="{ 'form-group': true, 'has-error': form.elenaAmount.$invalid }">
                     <label>Elena Amount</label>
-                    <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount">
+                    <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true">
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-group">
+                <div ng-class="{ 'form-group': true, 'has-error': form.gimmiDebt.$invalid }">
                     <label>Gimmi Debt</label>
-                    <input type="number" class="form-control" name="gimmiDebt" ng-model="data.gimmiDebt">
+                    <input type="number" class="form-control" name="gimmiDebt" ng-model="data.gimmiDebt" required="true">
                 </div>
             </div>
         </div>
