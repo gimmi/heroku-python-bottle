@@ -16,6 +16,8 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope) {
         description: '',
         tags: []
     };
+
+    $scope.tags = ['t1', 't2'];
 });
 
 angular.module('app').directive('appDatepicker', function () {
