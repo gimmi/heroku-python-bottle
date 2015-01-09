@@ -1,58 +1,66 @@
 <div class="container">
-    <form name="form">
-        <div class="row">
-            <div class="col-md-3">
-                <div ng-class="{ 'form-group': true, 'has-error': form.date.$invalid }">
-                    <label>Date</label>
-                    <input name="date" type="text" class="form-control" placeholder="yyyy-MM-dd" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/" required="true" app-datepicker>
+    <div class="row">
+        <div class="col-md-6">
+            <form name="form">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.date.$invalid }">
+                            <label>Date</label>
+                            <input name="date" type="text" class="form-control" placeholder="yyyy-MM-dd" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/" required="true" app-datepicker>
+                        </div>
+                    </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.gimmiAmount.$invalid }">
+                            <label>Gimmi Amount</label>
+                            <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.elenaDebt.$invalid }">
+                            <label>Elena Debt</label>
+                            <input type="number" class="form-control" name="elenaDebt" ng-model="data.elenaDebt" required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.elenaAmount.$invalid }">
+                            <label>Elena Amount</label>
+                            <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.gimmiDebt.$invalid }">
+                            <label>Gimmi Debt</label>
+                            <input type="number" class="form-control" name="gimmiDebt" ng-model="data.gimmiDebt" required="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.categoryId.$invalid }">
+                            <label>Category</label>
+                            <select class="form-control" name="categoryId" ng-model="data.categoryId" ng-options="category.id as category.name for category in categories" ng-required="true">
+                                <option></option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Description</label>
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid">Submit</button>
+            </form>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div ng-class="{ 'form-group': true, 'has-error': form.gimmiAmount.$invalid }">
-                    <label>Gimmi Amount</label>
-                    <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div ng-class="{ 'form-group': true, 'has-error': form.elenaDebt.$invalid }">
-                    <label>Elena Debt</label>
-                    <input type="number" class="form-control" name="elenaDebt" ng-model="data.elenaDebt" required="true">
-                </div>
-            </div>
+        <div class="col-md-6">
+            <pre>{{data | json:4}}</pre>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <div ng-class="{ 'form-group': true, 'has-error': form.elenaAmount.$invalid }">
-                    <label>Elena Amount</label>
-                    <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true">
-                </div>
-            </div>
-            <div class="col-md-3">
-                <div ng-class="{ 'form-group': true, 'has-error': form.gimmiDebt.$invalid }">
-                    <label>Gimmi Debt</label>
-                    <input type="number" class="form-control" name="gimmiDebt" ng-model="data.gimmiDebt" required="true">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>description</label>
-                    <input type="text" class="form-control">
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group">
-                    <label>Tags</label>
-                    <select class="form-control" name="tags" ng-model="data.tags" ng-options="tag for tag in tags"></select>
-                </div>
-            </div>
-        </div>
-        <button type="submit" class="btn btn-default" ng-disabled="form.$invalid">Submit</button>
-    </form>
-    <p>{{data | json}}</p>
+    </div>
 </div>

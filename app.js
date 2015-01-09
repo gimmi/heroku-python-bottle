@@ -6,7 +6,7 @@ angular.module('app').config(function ($routeProvider) {
     $routeProvider.otherwise('/home');
 });
 
-angular.module('app').controller('appExpenseEditCtrl', function ($scope) {
+angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) {
     $scope.data = {
         date: moment().format('YYYY-MM-DD'),
         gimmiAmount: 0,
@@ -14,10 +14,13 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope) {
         gimmiDebt: 0,
         elenaDebt: 0,
         description: '',
-        tags: []
+        categoryId: null
     };
+    $scope.categories = [];
 
-    $scope.tags = ['t1', 't2'];
+    $http.get('/api/expensecategories').then(function (ret) {
+        $scope.categories = ret.data.data;
+    });
 });
 
 angular.module('app').directive('appDatepicker', function () {

@@ -46,6 +46,15 @@ def get_expense(user, db, expense_id):
         return expense_row_to_json(row)
 
 
+@app.get('/api/expensecategories')
+def get_expense_categories(user, db):
+    with db.cursor() as cur:
+        cur.execute('SELECT * FROM expense_categories')
+        return dict(
+            data=[dict(id=str(row['id']), name=row['name']) for row in cur]
+        )
+
+
 @app.get('/api/expenses')
 def get_expenses(user, db):
     return build_paginated_result(db, 'SELECT * FROM expenses ORDER BY date', dict(), expense_row_to_json)
@@ -62,7 +71,7 @@ def add_expense(user, db):
         gimmi_debt=Decimal(json.get('gimmiDebt') or 0),
         elena_debt=Decimal(json.get('elenaDebt') or 0),
         description=json.get('description') or None,
-        tags=json.get('tags') or None
+        category_id=json.get('categoryId') or None
     )
     with db.cursor() as cur:
         cur.execute('SELECT id FROM expenses WHERE id = %(id)s', params)
@@ -76,14 +85,14 @@ def add_expense(user, db):
                     gimmi_debt = %(gimmi_debt)s,
                     elena_debt = %(elena_debt)s,
                     description = %(description)s,
-                    tags = %(tags)s
+                    category_id = %(category_id)s
                 WHERE id = %(id)s
             """, params)
         else:
             logging.info('%s is creating new expense %s', user, params['id'])
             cur.execute("""
-            INSERT INTO expenses(id, date, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, tags)
-            VALUES(%(id)s, %(date)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(tags)s)
+            INSERT INTO expenses(id, date, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
+            VALUES(%(id)s, %(date)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
             """, params)
 
     db.commit()
@@ -100,7 +109,7 @@ def expense_row_to_json(row):
         gimmiDebt=float(row['gimmi_debt']),
         elenaDebt=float(row['elena_debt']),
         description=row['description'],
-        tags=row['tags']
+        categoryId=row['category_id']
     )
 
 
