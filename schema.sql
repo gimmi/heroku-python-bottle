@@ -7,7 +7,7 @@ create database hrp;
 
 create table users(
    id uuid not null, 
-   name varchar(50) not null, 
+   name varchar(50) not null unique,
    password varchar(50), 
    constraint pk_users primary key (id)
 );
