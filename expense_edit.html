@@ -6,7 +6,7 @@
                     <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.date.$invalid }">
                             <label class="control-label">Date</label>
-                            <input name="date" type="text" class="form-control" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" required="true" app-daypicker ng-change="dateChanged()" tabindex="1">
+                            <input name="date" type="text" class="form-control" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" required="true" app-daypicker ng-change="dateChanged()">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -26,7 +26,7 @@
                     <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.gimmiAmount.$invalid }">
                             <label class="control-label">Gimmi Amount</label>
-                            <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true" tabindex="2">
+                            <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -40,7 +40,7 @@
                     <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.elenaAmount.$invalid }">
                             <label class="control-label">Elena Amount</label>
-                            <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true" tabindex="3">
+                            <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -54,7 +54,7 @@
                     <div class="col-md-6">
                         <div ng-class="{ 'form-group': true, 'has-error': form.categoryId.$invalid }">
                             <label class="control-label">Category</label>
-                            <select class="form-control" name="categoryId" ng-model="data.categoryId" ng-options="category.id as category.name for category in categories" ng-required="true" tabindex="4">
+                            <select class="form-control" name="categoryId" ng-model="data.categoryId" ng-options="category.id as category.name for category in categories" ng-required="true">
                                 <option></option>
                             </select>
                         </div>
@@ -64,7 +64,7 @@
                     <div class="col-md-12">
                         <div class="form-group">
                             <label class="control-label">Description</label>
-                            <input type="text" class="form-control" ng-model="data.description" tabindex="5">
+                            <input type="text" class="form-control" ng-model="data.description">
                         </div>
                     </div>
                 </div>
