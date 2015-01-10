@@ -3,46 +3,58 @@
         <div class="col-md-6">
             <form name="form">
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.date.$invalid }">
-                            <label>Date</label>
-                            <input name="date" type="text" class="form-control" placeholder="yyyy-MM-dd" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/" required="true" app-datepicker>
+                            <label class="control-label">Date</label>
+                            <input name="date" type="text" class="form-control" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" required="true" app-daypicker ng-change="dateChanged()" tabindex="1">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.startMonth.$invalid }">
+                            <label class="control-label">From Month</label>
+                            <input name="startMonth" type="text" class="form-control" spellcheck="false" ng-model="data.startMonth" ng-pattern="/^\d{4}-\d{2}$/" required="true" app-monthpicker tabindex="-1">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.endMonth.$invalid }">
+                            <label class="control-label">To Month</label>
+                            <input name="endMonth" type="text" class="form-control" spellcheck="false" ng-model="data.endMonth" ng-pattern="/^\d{4}-\d{2}$/" required="true" app-monthpicker tabindex="-1">
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.gimmiAmount.$invalid }">
-                            <label>Gimmi Amount</label>
-                            <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true">
+                            <label class="control-label">Gimmi Amount</label>
+                            <input type="number" class="form-control" name="gimmiAmount" ng-model="data.gimmiAmount" required="true" tabindex="2">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.elenaDebt.$invalid }">
-                            <label>Elena Debt</label>
-                            <input type="number" class="form-control" name="elenaDebt" ng-model="data.elenaDebt" required="true">
+                            <label class="control-label">Elena Debt</label>
+                            <input type="number" class="form-control" name="elenaDebt" ng-model="data.elenaDebt" required="true" tabindex="-1">
                         </div>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.elenaAmount.$invalid }">
-                            <label>Elena Amount</label>
-                            <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true">
+                            <label class="control-label">Elena Amount</label>
+                            <input type="number" class="form-control" name="elenaAmount" ng-model="data.elenaAmount" required="true" tabindex="3">
                         </div>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.gimmiDebt.$invalid }">
-                            <label>Gimmi Debt</label>
-                            <input type="number" class="form-control" name="gimmiDebt" ng-model="data.gimmiDebt" required="true">
+                            <label class="control-label">Gimmi Debt</label>
+                            <input type="number" class="form-control" name="gimmiDebt" ng-model="data.gimmiDebt" required="true" tabindex="-1">
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
                         <div ng-class="{ 'form-group': true, 'has-error': form.categoryId.$invalid }">
-                            <label>Category</label>
-                            <select class="form-control" name="categoryId" ng-model="data.categoryId" ng-options="category.id as category.name for category in categories" ng-required="true">
+                            <label class="control-label">Category</label>
+                            <select class="form-control" name="categoryId" ng-model="data.categoryId" ng-options="category.id as category.name for category in categories" ng-required="true" tabindex="4">
                                 <option></option>
                             </select>
                         </div>
@@ -51,12 +63,12 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
-                            <label>Description</label>
-                            <input type="text" class="form-control">
+                            <label class="control-label">Description</label>
+                            <input type="text" class="form-control" ng-model="data.description" tabindex="5">
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid">Submit</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid" tabindex="6">Submit</button>
             </form>
         </div>
         <div class="col-md-6">
