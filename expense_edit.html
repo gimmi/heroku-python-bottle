@@ -68,11 +68,14 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid" tabindex="6">Submit</button>
+                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid" ng-click="submit()">Submit</button>
             </form>
         </div>
         <div class="col-md-6">
-            <pre>{{data | json:4}}</pre>
+            <div class="alert alert-success" role="alert" ng-repeat="expense in succesfulExpenses">
+                <strong>Well done!</strong> Added expense {{expense.id}}
+            </div>
         </div>
     </div>
+    <pre>{{data | json:4}}</pre>
 </div>

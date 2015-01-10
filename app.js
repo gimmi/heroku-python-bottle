@@ -21,12 +21,20 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
 
     $scope.categories = [];
 
+    $scope.succesfulExpenses = [];
+
     $scope.dateChanged = function () {
         if ($scope.data.date) {
             $scope.data.startMonth = moment($scope.data.date, 'YYYY-MM-DD').format('YYYY-MM');
         } else {
             $scope.data.startMonth = null;
         }
+    };
+
+    $scope.submit = function () {
+        $scope.succesfulExpenses.unshift({
+            id: 'TODO'
+        });
     };
 
     $http.get('/api/expensecategories').then(function (ret) {
