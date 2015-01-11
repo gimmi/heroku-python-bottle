@@ -2,7 +2,7 @@ angular.module('app', ['ngRoute']);
 
 angular.module('app').config(function ($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'home.html'});
-    $routeProvider.when('/expenses/edit', {templateUrl: 'expense_edit.html', controller: 'appExpenseEditCtrl'});
+    $routeProvider.when('/expenses/new', {templateUrl: 'expense_edit.html', controller: 'appExpenseEditCtrl'});
     $routeProvider.otherwise('/home');
 });
 
