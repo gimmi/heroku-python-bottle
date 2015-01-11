@@ -25,7 +25,6 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
 
     $scope.submit = function () {
         $http.post('/api/expenses', $scope.data).then(function (ret) {
-            var str = [ret.data.date, ret.data.gimmiAmount + ret.data.elenaAmount].join('/');
             $scope.succesfulExpenses.unshift(ret.data);
             reset();
         });

@@ -111,6 +111,9 @@ def expense_row_to_json(row):
     return dict(
         id=str(row['id']),
         date=isodate.date_isoformat(row['date']),
+        dueYear=row['due_year'],
+        dueMonth=row['due_month'],
+        monthSpread=row['month_spread'],
         gimmiAmount=float(row['gimmi_amount']),
         elenaAmount=float(row['elena_amount']),
         gimmiDebt=float(row['gimmi_debt']),
