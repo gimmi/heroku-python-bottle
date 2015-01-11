@@ -15,15 +15,12 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
 
     $scope.dateChanged = function () {
         if ($scope.data.date) {
-            $scope.data.startMonth = moment($scope.data.date, 'YYYY-MM-DD').format('YYYY-MM');
+            $scope.data.dueYear = moment($scope.data.date, 'YYYY-MM-DD').year();
+            $scope.data.dueMonth = moment($scope.data.date, 'YYYY-MM-DD').month() + 1;
         } else {
-            $scope.data.startMonth = null;
+            $scope.data.dueYear = null;
+            $scope.data.dueMonth = null;
         }
-        $scope.startMonthChanged();
-    };
-
-    $scope.startMonthChanged = function () {
-        $scope.data.endMonth = $scope.data.startMonth;
     };
 
     $scope.submit = function () {
@@ -42,7 +39,8 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
     function reset() {
         angular.extend($scope.data, {
             date: moment().format('YYYY-MM-DD'),
-            dueDate: moment().format('YYYY-MM'),
+            dueYear: moment().year(),
+            dueMonth: moment().month() + 1,
             monthSpread: 1,
             gimmiAmount: 0,
             elenaAmount: 0,

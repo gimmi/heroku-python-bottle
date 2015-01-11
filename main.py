@@ -63,9 +63,13 @@ def get_expenses(user, db):
 @app.post('/api/expenses')
 def add_expense(user, db):
     json = request.json
+    today = isodate.parse_date(json.get('date') or isodate.date_isoformat(date.today()))
     params = dict(
         id=json.get('id') or str(uuid.uuid4()),
-        date=isodate.parse_date(json.get('date') or isodate.date_isoformat(date.today())),
+        date=today,
+        due_year=int(json.get('dueYear') or today.year),
+        due_month=int(json.get('dueMonth') or today.month),
+        month_spread=int(json.get('monthSpread') or 1),
         gimmi_amount=Decimal(json.get('gimmiAmount') or 0),
         elena_amount=Decimal(json.get('elenaAmount') or 0),
         gimmi_debt=Decimal(json.get('gimmiDebt') or 0),
@@ -80,6 +84,9 @@ def add_expense(user, db):
             cur.execute("""
                 UPDATE expenses SET
                     date = %(date)s,
+                    due_year = %(due_year)s,
+                    due_month = %(due_month)s,
+                    month_spread = %(month_spread)s,
                     gimmi_amount = %(gimmi_amount)s,
                     elena_amount = %(elena_amount)s,
                     gimmi_debt = %(gimmi_debt)s,
@@ -91,8 +98,8 @@ def add_expense(user, db):
         else:
             logging.info('%s is creating new expense %s', user, params['id'])
             cur.execute("""
-            INSERT INTO expenses(id, date, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
-            VALUES(%(id)s, %(date)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
+            INSERT INTO expenses(id, date, due_year, due_month, month_spread, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
+            VALUES(%(id)s, %(date)s, %(due_year)s, %(due_month)s, %(month_spread)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
             """, params)
 
     db.commit()

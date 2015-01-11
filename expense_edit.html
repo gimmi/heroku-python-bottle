@@ -9,16 +9,17 @@
                             <input name="date" type="text" class="form-control" spellcheck="false" ng-model="data.date" required="true" app-datepicker ng-change="dateChanged()">
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <div ng-class="{ 'form-group': true, 'has-error': form.dueDate.$invalid }">
-                            <label class="control-label">Due Date</label>
-                            <input name="dueDate" type="text" class="form-control" spellcheck="false" ng-model="data.dueDate" ng-pattern="/^\d{4}-\d{2}$/" required="true" app-monthpicker tabindex="-1" ng-change="startMonthChanged()">
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div ng-class="{ 'form-group': true, 'has-error': form.monthSpread.$invalid }">
-                            <label class="control-label">Month spread</label>
-                            <input name="monthSpread" type="number" class="form-control" spellcheck="false" ng-model="data.monthSpread" required="true" tabindex="-1">
+                    <div class="col-md-8">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.dueYear.$invalid || form.dueMonth.$invalid || form.monthSpread.$invalid }">
+                            <label class="control-label">Due Period</label>
+                            <div class="input-group">
+
+                                <input name="dueYear" type="number" class="form-control" spellcheck="false" ng-model="data.dueYear" required="true" tabindex="-1">
+                                <span class="input-group-addon">/</span>
+                                <input name="dueMonth" type="number" class="form-control" spellcheck="false" ng-model="data.dueMonth" required="true" tabindex="-1">
+                                <span class="input-group-addon">*</span>
+                                <input name="monthSpread" type="number" class="form-control" spellcheck="false" ng-model="data.monthSpread" required="true" tabindex="-1">
+                            </div>
                         </div>
                     </div>
                 </div>
