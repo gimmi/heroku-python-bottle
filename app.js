@@ -31,6 +31,22 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
         }
     };
 
+    $scope.gimmiAmountChanged = function () {
+        if ($scope.data.gimmiAmount) {
+            $scope.data.elenaDebt = $scope.data.gimmiAmount / 2;
+        } else {
+            $scope.data.elenaDebt = 0;
+        }
+    };
+
+    $scope.elenaAmountChanged = function () {
+        if ($scope.data.elenaAmount) {
+            $scope.data.gimmiDebt = $scope.data.elenaAmount / 2;
+        } else {
+            $scope.data.gimmiDebt = 0;
+        }
+    };
+
     $scope.submit = function () {
         $http.post('/api/expenses', $scope.data).then(function (ret) {
             $scope.succesfulExpenses.unshift(ret.data);
