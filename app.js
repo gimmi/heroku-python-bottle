@@ -7,17 +7,7 @@ angular.module('app').config(function ($routeProvider) {
 });
 
 angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) {
-    $scope.data = {
-        date: moment().format('YYYY-MM-DD'),
-        startMonth: moment().format('YYYY-MM'),
-        endMonth: moment().format('YYYY-MM'),
-        gimmiAmount: 0,
-        elenaAmount: 0,
-        gimmiDebt: 0,
-        elenaDebt: 0,
-        description: '',
-        categoryId: null
-    };
+    $scope.data = {};
 
     $scope.categories = [];
 
@@ -29,25 +19,50 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
         } else {
             $scope.data.startMonth = null;
         }
+        $scope.startMonthChanged();
+    };
+
+    $scope.startMonthChanged = function () {
+        $scope.data.endMonth = $scope.data.startMonth;
     };
 
     $scope.submit = function () {
-        $scope.succesfulExpenses.unshift({
-            id: 'TODO'
+        $http.post('/api/expenses', $scope.data).then(function (ret) {
+            var str = [ret.data.date, ret.data.gimmiAmount + ret.data.elenaAmount].join('/');
+            $scope.succesfulExpenses.unshift(ret.data);
+            reset();
         });
     };
 
+    reset();
     $http.get('/api/expensecategories').then(function (ret) {
         $scope.categories = ret.data.data;
     });
 
+    function reset() {
+        angular.extend($scope.data, {
+            date: moment().format('YYYY-MM-DD'),
+            dueDate: moment().format('YYYY-MM'),
+            monthSpread: 1,
+            gimmiAmount: 0,
+            elenaAmount: 0,
+            gimmiDebt: 0,
+            elenaDebt: 0,
+            description: '',
+            categoryId: null
+        });
+    }
 });
 
-angular.module('app').directive('appDaypicker', function () {
+angular.module('app').directive('appDatepicker', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
         link: function (scope, elem, attrs, ngModelController) {
+            ngModelController.$validators.validDate = function (value) {
+                return value && moment(value, 'YYYY-MM-DD', true).isValid();
+            };
+
             elem.datepicker({
                 format: "yyyy-mm-dd",
                 weekStart: 1,
@@ -68,7 +83,11 @@ angular.module('app').directive('appMonthpicker', function () {
     return {
         restrict: 'A',
         require: 'ngModel',
-        link: function (scope, elem, attrs) {
+        link: function (scope, elem, attrs, ngModelController) {
+            ngModelController.$validators.validMonth = function (value) {
+                return value && moment(value, 'YYYY-MM', true).isValid();
+            };
+
             elem.datepicker({
                 format: "yyyy-mm",
                 language: "it",

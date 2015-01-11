@@ -6,19 +6,19 @@
                     <div class="col-md-4">
                         <div ng-class="{ 'form-group': true, 'has-error': form.date.$invalid }">
                             <label class="control-label">Date</label>
-                            <input name="date" type="text" class="form-control" spellcheck="false" ng-model="data.date" ng-pattern="/^\d{4}-\d{2}-\d{2}$/" required="true" app-daypicker ng-change="dateChanged()">
+                            <input name="date" type="text" class="form-control" spellcheck="false" ng-model="data.date" required="true" app-datepicker ng-change="dateChanged()">
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div ng-class="{ 'form-group': true, 'has-error': form.startMonth.$invalid }">
-                            <label class="control-label">From Month</label>
-                            <input name="startMonth" type="text" class="form-control" spellcheck="false" ng-model="data.startMonth" ng-pattern="/^\d{4}-\d{2}$/" required="true" app-monthpicker tabindex="-1">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.dueDate.$invalid }">
+                            <label class="control-label">Due Date</label>
+                            <input name="dueDate" type="text" class="form-control" spellcheck="false" ng-model="data.dueDate" ng-pattern="/^\d{4}-\d{2}$/" required="true" app-monthpicker tabindex="-1" ng-change="startMonthChanged()">
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <div ng-class="{ 'form-group': true, 'has-error': form.endMonth.$invalid }">
-                            <label class="control-label">To Month</label>
-                            <input name="endMonth" type="text" class="form-control" spellcheck="false" ng-model="data.endMonth" ng-pattern="/^\d{4}-\d{2}$/" required="true" app-monthpicker tabindex="-1">
+                        <div ng-class="{ 'form-group': true, 'has-error': form.monthSpread.$invalid }">
+                            <label class="control-label">Month spread</label>
+                            <input name="monthSpread" type="number" class="form-control" spellcheck="false" ng-model="data.monthSpread" required="true" tabindex="-1">
                         </div>
                     </div>
                 </div>
@@ -68,14 +68,24 @@
                         </div>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid" ng-click="submit()">Submit</button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary" ng-disabled="form.$invalid" ng-click="submit()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <pre>{{data | json:4}}</pre>
+                    </div>
+                </div>
             </form>
         </div>
         <div class="col-md-6">
-            <div class="alert alert-success" role="alert" ng-repeat="expense in succesfulExpenses">
-                <strong>Well done!</strong> Added expense {{expense.id}}
+            <div class="alert alert-success" role="alert" ng-repeat="expense in succesfulExpenses track by expense.id">
+                {{expense.date}}/{{expense.elenaAmount + expense.gimmiAmount}}
             </div>
         </div>
     </div>
-    <pre>{{data | json:4}}</pre>
 </div>
