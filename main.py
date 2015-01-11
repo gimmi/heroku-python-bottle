@@ -26,6 +26,13 @@ def index(user):
     return static(user, 'index.html')
 
 
+@app.get('/api/context')
+def index(user):
+    return dict(
+        username=user
+    )
+
+
 @app.get('/<filepath:path>')
 def static(user, filepath):
     root = os.path.join(os.path.dirname(os.path.realpath(__file__)))

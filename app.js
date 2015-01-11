@@ -6,6 +6,14 @@ angular.module('app').config(function ($routeProvider) {
     $routeProvider.otherwise('/home');
 });
 
+angular.module('app').controller('appNavCtrl', function ($scope, $http) {
+    $scope.username = '';
+
+    $http.get('/api/context').then(function (ret) {
+        $scope.username = ret.data.username;
+    });
+});
+
 angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) {
     $scope.data = {};
 

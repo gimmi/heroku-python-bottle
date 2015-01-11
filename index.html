@@ -24,7 +24,7 @@
     <script src="app.js"></script>
 </head>
 <body style="padding-top: 70px">
-<nav class="navbar navbar-default navbar-fixed-top">
+<nav class="navbar navbar-default navbar-fixed-top" ng-controller="appNavCtrl">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -39,7 +39,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#/expenses/edit" tabindex="-1">Add Expense</a></li>
             </ul>
-            <p class="navbar-text navbar-right">Username</p>
+            <p class="navbar-text navbar-right"><span class="glyphicon glyphicon-user"></span> {{username}}</p>
         </div>
     </div>
 </nav>
