@@ -33,16 +33,6 @@ def index(user):
     )
 
 
-@app.get('/<filepath:path>')
-def static(user, filepath):
-    root = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-    response = bottle.static_file(filepath, root=root)
-    response.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
-    response.set_header('Pragma', 'no-cache')
-    response.set_header('Expires', '0')
-    return response
-
-
 @app.get('/api/expenses/<expense_id>')
 def get_expense(user, db, expense_id):
     with db.cursor() as cur:
@@ -62,9 +52,20 @@ def get_expense_categories(user, db):
         )
 
 
-@app.get('/api/expenses')
-def get_expenses(user, db):
-    return build_paginated_result(db, 'SELECT * FROM expenses ORDER BY date', dict(), expense_row_to_json)
+@app.get('/api/reports/monthlyexpenses/<due_year:int>/<due_month:int>')
+def get_expenses(user, db, due_year, due_month):
+    sql = 'SELECT * FROM expenses WHERE due_year = %s AND due_month = %s ORDER BY date'
+
+    with db.cursor() as cur:
+        cur.execute(sql, [due_year, due_month])
+        return dict(
+            date=isodate.date_isoformat(date(due_year, due_month, 1)),
+            expenses=[dict(
+                date=isodate.date_isoformat(row['date']),
+                amount=float(row['gimmi_amount'] + row['elena_amount'])/row['month_spread'],
+                monthSpread=row['month_spread'],
+            ) for row in cur]
+        )
 
 
 @app.post('/api/expenses')
@@ -112,6 +113,16 @@ def add_expense(user, db):
     db.commit()
 
     return get_expense(user, db, params['id'])
+
+
+@app.get('/<filepath:path>')
+def static(user, filepath):
+    root = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+    response = bottle.static_file(filepath, root=root)
+    response.set_header('Cache-Control', 'no-cache, no-store, must-revalidate')
+    response.set_header('Pragma', 'no-cache')
+    response.set_header('Expires', '0')
+    return response
 
 
 def expense_row_to_json(row):

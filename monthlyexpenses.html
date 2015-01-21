@@ -1,0 +1,6 @@
+<div class="container">
+    <h3>{{date | date:'MMMM yyyy'}}</h3>
+    <ul class="list-unstyled">
+        <li ng-repeat="expense in expenses">{{expense.date | date:'EEE d'}} <strong>{{expense.amount | currency}}</strong></li>
+    </ul>
+</div>

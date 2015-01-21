@@ -2,12 +2,14 @@ angular.module('app', ['ngRoute']);
 
 angular.module('app').config(function ($routeProvider) {
     $routeProvider.when('/home', {templateUrl: 'home.html'});
+    $routeProvider.when('/expenses/:dueYear/:dueMonth', {templateUrl: 'monthlyexpenses.html', controller: 'appMonthlyExpensesCtrl'});
     $routeProvider.when('/expenses/new', {templateUrl: 'expense_edit.html', controller: 'appExpenseEditCtrl'});
     $routeProvider.otherwise('/home');
 });
 
 angular.module('app').controller('appNavCtrl', function ($scope, $http) {
     $scope.username = '';
+    $scope.now = new Date();
 
     $http.get('/api/context').then(function (ret) {
         $scope.username = ret.data.username;
@@ -73,6 +75,13 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
             categoryId: null
         });
     }
+});
+
+angular.module('app').controller('appMonthlyExpensesCtrl', function ($scope, $http, $routeParams) {
+    $http.get('/api/reports/monthlyexpenses/' + $routeParams.dueYear + '/' + $routeParams.dueMonth).then(function (res) {
+        $scope.date = res.data.date;
+        $scope.expenses = res.data.expenses;
+    });
 });
 
 angular.module('app').directive('appDatepicker', function () {
