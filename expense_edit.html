@@ -84,7 +84,7 @@
         </div>
         <div class="col-md-6">
             <div class="alert alert-success" role="alert" ng-repeat="expense in succesfulExpenses track by expense.id">
-                {{expense.dueYear}}-{{expense.dueMonth}}&#8594;{{expense.elenaAmount + expense.gimmiAmount}}
+                {{expense.date | date:'d MMM yy'}}: {{expense.elenaAmount + expense.gimmiAmount | currency:'€':2}}
             </div>
         </div>
     </div>
