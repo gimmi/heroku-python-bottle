@@ -17,6 +17,7 @@ logging.info('Starting app')
 
 conn_pool = support.create_conn_pool()
 app = bottle.Bottle()
+app.install(support.JSONPlugin())
 app.install(support.DbPlugin(conn_pool))
 app.install(support.AuthPlugin(conn_pool))
 

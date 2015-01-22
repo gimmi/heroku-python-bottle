@@ -3,7 +3,12 @@ import psycopg2.extras
 import os
 from urllib.parse import urlparse
 import bottle
+from bottle import response
 import logging
+import json
+from decimal import Decimal
+from datetime import date
+import isodate
 
 
 def create_conn_pool():
@@ -81,3 +86,33 @@ class AuthPlugin(object):
                 return bool(row)
         finally:
             self._conn_pool.putconn(conn)
+
+
+class JSONPlugin(object):
+    name = 'json'
+    api = 2
+
+    def apply(self, callback, route):
+        def wrapper(*args, **kwargs):
+            try:
+                ret = callback(*args, **kwargs)
+            except bottle.HTTPError as err:
+                ret = err
+
+            if isinstance(ret, dict) or isinstance(ret, list):
+                response.content_type = 'application/json'
+                return json.dumps(ret, default=self.custom_serialize)
+            elif isinstance(ret, bottle.HTTPResponse) and (isinstance(ret.body, dict) or isinstance(ret.body, list)):
+                ret.content_type = 'application/json'
+                ret.body = json.dumps(ret, default=self.custom_serialize)
+            return ret
+
+        return wrapper
+
+    @staticmethod
+    def custom_serialize(obj):
+        if isinstance(obj, Decimal):
+            return float(obj)
+        if isinstance(obj, date):
+            return isodate.date_isoformat(obj)
+        raise TypeError
