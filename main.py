@@ -55,16 +55,26 @@ def get_expense_categories(user, db):
 
 @app.get('/api/reports/monthlyexpenses/<due_year:int>/<due_month:int>')
 def get_expenses(user, db, due_year, due_month):
-    sql = 'SELECT * FROM expenses WHERE due_year = %s AND due_month = %s ORDER BY date'
+    sql = '''\
+        select
+          e.*,
+          ec.name as category_name
+        from expenses e
+        inner join expense_categories ec on(e.category_id = ec.id)
+        WHERE due_year = %s
+        AND due_month = %s
+        ORDER BY date
+    '''
 
     with db.cursor() as cur:
         cur.execute(sql, [due_year, due_month])
         return dict(
-            date=isodate.date_isoformat(date(due_year, due_month, 1)),
+            date=date(due_year, due_month, 1),
             expenses=[dict(
-                date=isodate.date_isoformat(row['date']),
-                amount=float(row['gimmi_amount'] + row['elena_amount'])/row['month_spread'],
-                monthSpread=row['month_spread'],
+                date=row['date'],
+                amount=(row['gimmi_amount'] + row['elena_amount'])/row['month_spread'],
+                description=row['description'],
+                categoryName=row['category_name']
             ) for row in cur]
         )
 
