@@ -57,8 +57,8 @@ def get_expense_categories(user, db):
 def get_expenses(user, db, due_year, due_month):
     sql = '''\
         select
-          e.*,
-          ec.name as category_name
+            e.*,
+            ec.name as category_name
         from expenses e
         inner join expense_categories ec on(e.category_id = ec.id)
         WHERE due_year = %s
