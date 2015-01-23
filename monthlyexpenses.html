@@ -1,6 +1,19 @@
 <div class="container">
     <h3>{{date | date:'MMMM yyyy'}}</h3>
-    <ul class="list-unstyled">
-        <li ng-repeat="expense in expenses">{{expense.date | date:'EEE d'}} <strong>{{expense.amount | currency}}</strong></li>
-    </ul>
+    <table class="table table-condensed table-hover">
+        <thead>
+        <tr>
+            <th style="width: 70px">Date</th>
+            <th style="width: 100px; text-align: right">Amount</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="expense in expenses">
+            <td>{{expense.date | date:'dd EEE'}}</td>
+            <td style="text-align: right">{{expense.amount | currency}}</td>
+            <td><p>Ciao {{expense.description}}</p> <span class="label label-default">{{expense.categoryName}}</span></td>
+        </tr>
+        </tbody>
+    </table>
 </div>
