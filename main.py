@@ -85,8 +85,8 @@ def get_expenses(user, db, due_year, due_month):
           from expenses where due_month < %s
         ''', [ret['date']])
         row = cur.fetchone()
-        ret['gimmi_debt'] = row['gimmi_debt']
-        ret['elena_debt'] = row['elena_debt']
+        ret['gimmiDebt'] = row['gimmi_debt']
+        ret['elenaDebt'] = row['elena_debt']
 
         cur.execute('''\
             select

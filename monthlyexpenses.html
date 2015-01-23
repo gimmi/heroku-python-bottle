@@ -1,19 +1,41 @@
 <div class="container">
-    <h3>{{date | date:'MMMM yyyy'}}</h3>
-    <table class="table table-condensed table-hover">
-        <thead>
-        <tr>
-            <th style="width: 70px">Date</th>
-            <th style="width: 100px; text-align: right">Amount</th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr ng-repeat="expense in expenses">
-            <td>{{expense.date | date:'dd EEE'}}</td>
-            <td style="text-align: right">{{expense.amount | currency}}</td>
-            <td><p>Ciao {{expense.description}}</p> <span class="label label-default">{{expense.categoryName}}</span></td>
-        </tr>
-        </tbody>
-    </table>
+    <h3>{{rpt.date | date:'MMMM yyyy'}}</h3>
+    <p>Gimmi debt: <strong>{{rpt.gimmiDebt | currency}}</strong> - Elena debt: <strong>{{rpt.elenaDebt | currency}}</strong></p>
+    <div class="row">
+        <div class="col-md-8">
+            <table class="table table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 70px">Date</th>
+                    <th style="width: 100px">Amount</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="expense in rpt.expenses">
+                    <td>{{expense.date | date:'dd EEE'}}</td>
+                    <td style="text-align: right">{{expense.amount | currency}}</td>
+                    <td>{{expense.description}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-4">
+            <table class="table table-condensed table-hover">
+                <thead>
+                <tr>
+                    <th style="width: 100px">Amount</th>
+                    <th style="width: 70px">Category</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="cat in rpt.categories">
+                    <td style="text-align: right">{{cat.amount | currency}}</td>
+                    <td>{{cat.name}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>

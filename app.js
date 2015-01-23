@@ -78,9 +78,10 @@ angular.module('app').controller('appExpenseEditCtrl', function ($scope, $http) 
 });
 
 angular.module('app').controller('appMonthlyExpensesCtrl', function ($scope, $http, $routeParams) {
+    $scope.rpt = {};
+
     $http.get('/api/reports/monthlyexpenses/' + $routeParams.dueYear + '/' + $routeParams.dueMonth).then(function (res) {
-        $scope.date = res.data.date;
-        $scope.expenses = res.data.expenses;
+        angular.copy(res.data, $scope.rpt);
     });
 });
 
