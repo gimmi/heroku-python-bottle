@@ -27,8 +27,7 @@ insert into expense_categories(id, name) values('432574c1-983e-11e4-bd06-0800200
 create table expenses(
    id uuid not null,
    date date not null,
-   due_year int not null,
-   due_month int not null,
+   due_month date not null,
    month_spread int not null,
    gimmi_amount decimal(13,2) not null,
    elena_amount decimal(13,2) not null,

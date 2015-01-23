@@ -61,13 +61,12 @@ def get_expenses(user, db, due_year, due_month):
             ec.name as category_name
         from expenses e
         inner join expense_categories ec on(e.category_id = ec.id)
-        WHERE due_year = %s
-        AND due_month = %s
+        WHERE due_month = %s
         ORDER BY date
     '''
 
     with db.cursor() as cur:
-        cur.execute(sql, [due_year, due_month])
+        cur.execute(sql, [date(due_year, due_month, 1)])
         return dict(
             date=date(due_year, due_month, 1),
             expenses=[dict(
@@ -86,8 +85,7 @@ def add_expense(user, db):
     params = dict(
         id=json.get('id') or str(uuid.uuid4()),
         date=today,
-        due_year=int(json.get('dueYear') or today.year),
-        due_month=int(json.get('dueMonth') or today.month),
+        due_month=date(int(json.get('dueYear') or today.year), int(json.get('dueMonth') or today.month), 1),
         month_spread=int(json.get('monthSpread') or 1),
         gimmi_amount=Decimal(json.get('gimmiAmount') or 0),
         elena_amount=Decimal(json.get('elenaAmount') or 0),
@@ -103,7 +101,6 @@ def add_expense(user, db):
             cur.execute("""
                 UPDATE expenses SET
                     date = %(date)s,
-                    due_year = %(due_year)s,
                     due_month = %(due_month)s,
                     month_spread = %(month_spread)s,
                     gimmi_amount = %(gimmi_amount)s,
@@ -117,8 +114,8 @@ def add_expense(user, db):
         else:
             logging.info('%s is creating new expense %s', user, params['id'])
             cur.execute("""
-            INSERT INTO expenses(id, date, due_year, due_month, month_spread, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
-            VALUES(%(id)s, %(date)s, %(due_year)s, %(due_month)s, %(month_spread)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
+            INSERT INTO expenses(id, date, due_month, month_spread, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
+            VALUES(%(id)s, %(date)s, %(due_month)s, %(month_spread)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
             """, params)
 
     db.commit()
@@ -140,8 +137,8 @@ def expense_row_to_json(row):
     return dict(
         id=str(row['id']),
         date=isodate.date_isoformat(row['date']),
-        dueYear=row['due_year'],
-        dueMonth=row['due_month'],
+        dueYear=row['due_month'].year,
+        dueMonth=row['due_month'].month,
         monthSpread=row['month_spread'],
         gimmiAmount=float(row['gimmi_amount']),
         elenaAmount=float(row['elena_amount']),
