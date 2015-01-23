@@ -55,27 +55,55 @@ def get_expense_categories(user, db):
 
 @app.get('/api/reports/monthlyexpenses/<due_year:int>/<due_month:int>')
 def get_expenses(user, db, due_year, due_month):
-    sql = '''\
-        select
-            e.*,
-            ec.name as category_name
-        from expenses e
-        inner join expense_categories ec on(e.category_id = ec.id)
-        WHERE due_month = %s
-        ORDER BY date
-    '''
-
+    ret = dict(
+        date=date(due_year, due_month, 1),
+    )
     with db.cursor() as cur:
-        cur.execute(sql, [date(due_year, due_month, 1)])
-        return dict(
-            date=date(due_year, due_month, 1),
-            expenses=[dict(
-                date=row['date'],
-                amount=(row['gimmi_amount'] + row['elena_amount'])/row['month_spread'],
-                description=row['description'],
-                categoryName=row['category_name']
-            ) for row in cur]
-        )
+        cur.execute('''\
+            select
+                e.date,
+                e.description,
+                (e.gimmi_amount + e.elena_amount)/e.month_spread as amount,
+                ec.name as category_name
+            from expenses e
+            inner join expense_categories ec on(e.category_id = ec.id)
+            WHERE %s >= due_month
+            and %s < (due_month + e.month_spread * interval '1 month')
+            ORDER BY date
+        ''', [ret['date'], ret['date']])
+        ret['expenses'] = [dict(
+            date=row['date'],
+            amount=row['amount'],
+            description=row['description'],
+            categoryName=row['category_name']
+        ) for row in cur]
+
+        cur.execute('''\
+          select
+            greatest(sum(gimmi_debt) - sum(elena_debt), 0) as gimmi_debt,
+            greatest(sum(elena_debt) - sum(gimmi_debt), 0) as elena_debt
+          from expenses where due_month < %s
+        ''', [ret['date']])
+        row = cur.fetchone()
+        ret['gimmi_debt'] = row['gimmi_debt']
+        ret['elena_debt'] = row['elena_debt']
+
+        cur.execute('''\
+            select
+                ec.name,
+                sum((e.gimmi_amount + e.elena_amount)/e.month_spread) as amount
+            from expenses e
+            inner join expense_categories ec on(e.category_id = ec.id)
+            WHERE %s >= due_month
+            and %s < (due_month + e.month_spread * interval '1 month')
+            group by ec.name
+        ''', [ret['date'], ret['date']])
+        ret['categories'] = [dict(
+            name=row['name'],
+            amount=row['amount']
+        ) for row in cur]
+
+    return ret
 
 
 @app.post('/api/expenses')
