@@ -35,6 +35,38 @@ def init_logging():
     logging.root.setLevel(logging.DEBUG)
 
 
+def import_from_csv(file_path):
+    import csv, uuid
+    pool = create_conn_pool()
+    db = pool.getconn()
+
+    with db.cursor() as cur:
+        with open(file_path, newline='') as f:
+            for row in csv.reader(f, delimiter='\t'):
+                dd = isodate.parse_date(row[0])
+                amount = Decimal(row[1])
+                print('%s %s' % (dd, amount))
+                gimmi_debt = Decimal(row[2] or '0')
+                elena_debt = Decimal(row[3] or '0')
+                cur.execute("""
+                    INSERT INTO expenses(id, date, due_month, month_spread, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
+                    VALUES(%(id)s, %(date)s, %(due_month)s, %(month_spread)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
+                """, dict(
+                    id=str(uuid.uuid4()),
+                    date=dd,
+                    due_month=date(dd.year, dd.month, 1),
+                    month_spread=1,
+                    gimmi_amount=amount if elena_debt else Decimal(0),
+                    elena_amount=amount if gimmi_debt else Decimal(0),
+                    gimmi_debt=gimmi_debt,
+                    elena_debt=elena_debt,
+                    description=row[4],
+                    category_id='e6a55731-bfb3-4c07-a69a-34134428e409'
+                ))
+    db.commit()
+    pool.putconn(db)
+
+
 class DbPlugin(object):
     name = 'db'
     api = 2

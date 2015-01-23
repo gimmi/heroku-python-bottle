@@ -21,6 +21,7 @@ create table expense_categories(
    constraint pk_expense_categories primary key (id)
 );
 
+insert into expense_categories(id, name) values('e6a55731-bfb3-4c07-a69a-34134428e409', 'sconosciuto');
 insert into expense_categories(id, name) values('432574c0-983e-11e4-bd06-0800200c9a66', 'casa');
 insert into expense_categories(id, name) values('432574c1-983e-11e4-bd06-0800200c9a66', 'tasse');
 
