@@ -35,36 +35,50 @@ def init_logging():
     logging.root.setLevel(logging.DEBUG)
 
 
-def import_from_csv(file_path):
-    import csv, uuid
+def import_from_xl(file_path):
+    import uuid, xlrd
+
+    processed_rows = 0
+    imported_rows = 0
+
+    wb = xlrd.open_workbook(file_path)
+    ws = wb.sheet_by_index(0)
+
     pool = create_conn_pool()
     db = pool.getconn()
 
     with db.cursor() as cur:
-        with open(file_path, newline='') as f:
-            for row in csv.reader(f, delimiter='\t'):
-                dd = isodate.parse_date(row[0])
-                amount = Decimal(row[1])
-                print('%s %s' % (dd, amount))
-                gimmi_debt = Decimal(row[2] or '0')
-                elena_debt = Decimal(row[3] or '0')
+        for rowx in range(1, ws.nrows):
+            expense_date = date(*xlrd.xldate_as_tuple(ws.cell(rowx, 0).value, wb.datemode)[:3])
+            amount = Decimal(ws.cell(rowx, 1).value)
+            gimmi_debt = Decimal(ws.cell(rowx, 2).value or 0)
+            elena_debt = Decimal(ws.cell(rowx, 3).value or 0)
+            description = ws.cell(rowx, 4).value
+            category = ws.cell(rowx, 5).value
+
+            cur.execute("SELECT 1 FROM expenses WHERE description LIKE concat('%%#xl', %s)", [rowx])
+            if not cur.fetchone():
                 cur.execute("""
-                    INSERT INTO expenses(id, date, due_month, month_spread, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
-                    VALUES(%(id)s, %(date)s, %(due_month)s, %(month_spread)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
-                """, dict(
+                        INSERT INTO expenses(id, date, due_month, month_spread, gimmi_amount, elena_amount, gimmi_debt, elena_debt, description, category_id)
+                        VALUES(%(id)s, %(date)s, %(due_month)s, %(month_spread)s, %(gimmi_amount)s, %(elena_amount)s, %(gimmi_debt)s, %(elena_debt)s, %(description)s, %(category_id)s)
+                    """, dict(
                     id=str(uuid.uuid4()),
-                    date=dd,
-                    due_month=date(dd.year, dd.month, 1),
+                    date=expense_date,
+                    due_month=date(expense_date.year, expense_date.month, 1),
                     month_spread=1,
                     gimmi_amount=amount if elena_debt else Decimal(0),
                     elena_amount=amount if gimmi_debt else Decimal(0),
                     gimmi_debt=gimmi_debt,
                     elena_debt=elena_debt,
-                    description=row[4],
+                    description=description + ' #xl' + str(rowx),
                     category_id='e6a55731-bfb3-4c07-a69a-34134428e409'
                 ))
+                imported_rows += 1
+            processed_rows += 1
+
     db.commit()
     pool.putconn(db)
+    print('%s rows processed, %s imported' % (processed_rows, imported_rows))
 
 
 class DbPlugin(object):
@@ -148,3 +162,8 @@ class JSONPlugin(object):
         if isinstance(obj, date):
             return isodate.date_isoformat(obj)
         raise TypeError
+
+if __name__ == '__main__':
+    file_path = os.path.join(os.path.expanduser('~'), 'Downloads', 'Spese.xlsx')
+    print('Importing from %s...' % file_path)
+    import_from_xl(file_path)
