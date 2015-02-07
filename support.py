@@ -81,6 +81,26 @@ def import_from_xl(file_path):
     print('%s rows processed, %s imported' % (processed_rows, imported_rows))
 
 
+def dropbox_upload(oauth2_access_token, src_path, dest_path):
+    import dropbox
+
+    client = dropbox.client.DropboxClient(oauth2_access_token)
+    print('linked account: ', client.account_info().get('email'))
+
+    with open(src_path, 'rb') as f:
+        put_file_resp = client.put_file(dest_path, f, overwrite=True)
+        print(src_path, '=>', dest_path, '({}, rev {})'.format(put_file_resp.get('size'), put_file_resp.get('revision')))
+
+    # folder_metadata = client.metadata('/')
+    # print 'metadata: ', folder_metadata
+    #
+    # f, metadata = client.get_file_and_metadata('/magnum-opus.txt')
+    # out = open('magnum-opus.txt', 'wb')
+    # out.write(f.read())
+    # out.close()
+    # print metadata
+
+
 class DbPlugin(object):
     name = 'db'
     api = 2
